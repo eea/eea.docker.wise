@@ -18,38 +18,31 @@ In order to be able to edit source-code on your machine using your favorite edit
     $ usermod -a -G docker zope-www
     $ sudo su - zope-www
 
-Now get the source code:
+1. Get the source code:
 
-    $ git clone https://github.com/eea/eea.docker.wise.git
-    $ cd eea.docker.wise/wise-devel
-    $ docker-compose -f source-code.yml up
+        $ git clone https://github.com/eea/eea.docker.wise.git
+        $ cd eea.docker.wise/wise-devel
+        $ docker-compose -f source-code.yml up
 
-Start the Plone container:
+2. Start development stack:
 
-    $ docker-compose up -d
+        $ docker-compose up -d
 
-Then connect with bash to the Plone container:
+3. Start Plone in foreground:
 
-    $ docker exec -it wisedevel_plone_1 bash
+        $ docker-compose exec plone bin/instance fg
 
-Inside the container start the Plone instance in foreground:
+4. Within your favorite browser head to http://localhost:8080, add a Plone site and install the following add-ons:
+    * `EEA Plone buildout profile`
+    * `wise.theme`
+    * `wise.content`
 
-    $ bin/instance fg
+5. Now you are ready to develop Plone Add-ons within `src` folder:
 
-Within your favorite browser head to http://localhost:8080,
-add a Plone site and install the following add-ons:
-* `EEA Plone buildout profile`
-* `wise.theme`
-* `wise.content`
+        $ ls -l src/
 
-Now you are ready to develop Plone Add-ons within `src` folder:
+6. You can do normal Plone development, including setting breakpoints with `ipdb`
 
-    $ ls -l src/
-
-You can do normal Plone development, including setting breakpoints
-with pdb. The eggs used in the buildout are in the parent folder of
-the default location. If you need to debug something, to set a
-breakpoint, you can use vi to edit files.
 
 ### Deployment
 
