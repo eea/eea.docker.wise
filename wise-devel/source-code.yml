@@ -1,19 +1,12 @@
+version: "2"
 services:
-  source_code:
+  code:
     image: eeacms/plone-wise:devel
-    entrypoint: ['buildout']
-    command: ['-c', 'source.cfg']
+    entrypoint:
+    - "buildout"
+    command:
+    - "-c"
+    - "source.cfg"
     volumes:
     - ./src/source.cfg:/plone/instance/source.cfg:ro
     - ./src:/plone/instance/src:z
-    depends_on:
-    - permissions-fix
-  permissions-fix:
-    image: alpine
-    volumes:
-    - ./src:/src
-    command:
-    - "chown"
-    - "-vR"
-    - "500:500"
-    - "/src"
