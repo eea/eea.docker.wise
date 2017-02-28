@@ -1,0 +1,29 @@
+version: "2"
+services:
+  plone:
+    tty: true
+    stdin_open: true
+    image: eeacms/plone-wise:devel
+    ports:
+    - "8080:8080"
+    depends_on:
+    - memcached
+    volumes:
+    - ./src:/plone/instance/src
+    - wise-data:/data
+    command:
+    - cat
+  memcached:
+    image: memcached:alpine
+    command:
+    - "memcached"
+    - "-m"
+    - "2G"
+  cloud9:
+    image: eeacms/cloud9
+    ports:
+    - "9000:8080"
+    volumes:
+    - ./:/cloud9/workspace:z
+volumes:
+  wise-data:

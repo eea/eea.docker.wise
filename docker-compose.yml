@@ -1,0 +1,65 @@
+version: "2"
+services:
+  apache:
+    image: eeacms/apache:2.4-1.0
+    SERVER_ADMIN: "helpdesk@wise.europa.eu"
+    SERVER_NAME: "wise.europa.eu"
+    RewriteRule: "^/(.*) http://haproxy:5000/VirtualHostBase/http/wise.europa.eu:80/VirtualHostRoot/$$1 [P,L]"
+  haproxy:
+    image: eeacms/haproxy:1.7-1.0
+    labels:
+      io.rancher.scheduler.affinity:host_label: wise=yes
+    depends_on:
+    - plone
+    environment:
+      BACKENDS: "plone"
+      BACKENDS_PORT: "8080"
+      DNS_ENABLED: "True"
+      TZ: "Europe/Copenhagen"
+  memcached:
+    image: memcached:1.4-alpine
+    environment:
+      TZ: "Europe/Copenhagen"
+    command:
+    - "memcached"
+    - "-m"
+    - "2048"
+    labels:
+      io.rancher.scheduler.affinity:host_label: wise=yes
+  plone:
+    image: eeacms/plone-wise:9.3
+    labels:
+      io.rancher.scheduler.affinity:host_label: wise=yes
+    depends_on:
+    - zeoserver
+    - memcached
+    environment:
+      ZOPE_MODE: "zeo_client"
+      TZ: "Europe/Copenhagen"
+    volumes:
+    - wise-downloads:/data/downloads
+  async:
+    image: eeacms/plone-wise:9.3
+    labels:
+      io.rancher.scheduler.affinity:host_label: wise=yes
+    depends_on:
+    - zeoserver
+    - memcached
+    environment:
+     ZOPE_MODE: "zeo_async"
+     TZ: "Europe/Copenhagen"
+    volumes:
+    - wise-downloads:/data/downloads
+  zeoserver:
+    image: plone:4.3.10
+    labels:
+      io.rancher.scheduler.affinity:host_label: wise=yes
+    environment:
+      TZ: "Europe/Copenhagen"
+    command:
+    - zeoserver
+    volumes:
+    - wise-data:/data
+ volumes:
+  wise-data:
+  wise-downloads:
