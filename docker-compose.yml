@@ -2,9 +2,13 @@ version: "2"
 services:
   apache:
     image: eeacms/apache:2.4-1.0
-    SERVER_ADMIN: "helpdesk@wise.europa.eu"
-    SERVER_NAME: "wise.europa.eu"
-    RewriteRule: "^/(.*) http://haproxy:5000/VirtualHostBase/http/wise.europa.eu:80/VirtualHostRoot/$$1 [P,L]"
+    labels:
+      io.rancher.scheduler.affinity:host_label: wise=yes
+    environment:
+      SERVER_ADMIN: "helpdesk@wise.europa.eu"
+      SERVER_NAME: "wise.europa.eu"
+      RewriteRule: "^/(.*) http://haproxy:5000/VirtualHostBase/http/wise.europa.eu:80/VirtualHostRoot/$$1 [P,L]"
+      TZ: "Europe/Copenhagen"
   haproxy:
     image: eeacms/haproxy:1.7-1.0
     labels:
@@ -18,16 +22,16 @@ services:
       TZ: "Europe/Copenhagen"
   memcached:
     image: memcached:1.4-alpine
+    labels:
+      io.rancher.scheduler.affinity:host_label: wise=yes
     environment:
       TZ: "Europe/Copenhagen"
     command:
     - "memcached"
     - "-m"
     - "2048"
-    labels:
-      io.rancher.scheduler.affinity:host_label: wise=yes
   plone:
-    image: eeacms/plone-wise:9.3
+    image: eeacms/plone-wise
     labels:
       io.rancher.scheduler.affinity:host_label: wise=yes
     depends_on:
@@ -39,7 +43,7 @@ services:
     volumes:
     - wise-downloads:/data/downloads
   async:
-    image: eeacms/plone-wise:9.3
+    image: eeacms/plone-wise
     labels:
       io.rancher.scheduler.affinity:host_label: wise=yes
     depends_on:
@@ -60,6 +64,6 @@ services:
     - zeoserver
     volumes:
     - wise-data:/data
- volumes:
+volumes:
   wise-data:
   wise-downloads:
