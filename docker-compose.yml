@@ -9,6 +9,8 @@ services:
       SERVER_NAME: "wise.europa.eu"
       RewriteRule: "^/(.*) http://haproxy:5000/VirtualHostBase/http/wise.europa.eu:80/VirtualHostRoot/$$1 [P,L]"
       TZ: "Europe/Copenhagen"
+    depends_on:
+    - haproxy
   haproxy:
     image: eeacms/haproxy:1.7-1.0
     labels:
