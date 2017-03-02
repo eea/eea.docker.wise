@@ -7,7 +7,7 @@ services:
     health_check:
       port: 80
       interval: 30000
-      initializing_timeout: 90000
+      initializing_timeout: 300000
       unhealthy_threshold: 3
       strategy: recreate
       healthy_threshold: 2
@@ -19,7 +19,7 @@ services:
     health_check:
       port: 4242
       interval: 30000
-      initializing_timeout: 90000
+      initializing_timeout: 300000
       unhealthy_threshold: 3
       strategy: recreate
       healthy_threshold: 2
@@ -31,7 +31,7 @@ services:
     health_check:
       port: 11211
       interval: 30000
-      initializing_timeout: 90000
+      initializing_timeout: 300000
       unhealthy_threshold: 3
       strategy: recreate
       response_timeout: 3000
@@ -43,7 +43,7 @@ services:
     health_check:
       port: 8080
       interval: 30000
-      initializing_timeout: 90000
+      initializing_timeout: 300000
       unhealthy_threshold: 3
       strategy: recreate
       request_line: GET "/" "HTTP/1.0"
@@ -56,7 +56,7 @@ services:
     health_check:
       port: 8080
       interval: 30000
-      initializing_timeout: 90000
+      initializing_timeout: 300000
       unhealthy_threshold: 3
       strategy: recreate
       request_line: GET "/" "HTTP/1.0"
@@ -64,12 +64,10 @@ services:
       healthy_threshold: 2
   zeoserver:
     scale: 1
-    upgrade_strategy:
-      start_first: true
     health_check:
       port: 8100
       interval: 30000
-      initializing_timeout: 90000
+      initializing_timeout: 300000
       unhealthy_threshold: 3
       strategy: recreate
       response_timeout: 6000
