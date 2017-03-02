@@ -3,7 +3,7 @@ services:
   apache:
     image: eeacms/apache:2.4-1.0
     labels:
-      io.rancher.scheduler.affinity:host_label: wise=yes
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     environment:
       SERVER_ADMIN: "helpdesk@wise.europa.eu"
       SERVER_NAME: "wise.europa.eu"
@@ -12,7 +12,7 @@ services:
   haproxy:
     image: eeacms/haproxy:1.7-1.0
     labels:
-      io.rancher.scheduler.affinity:host_label: wise=yes
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
     - plone
     environment:
@@ -20,20 +20,10 @@ services:
       BACKENDS_PORT: "8080"
       DNS_ENABLED: "True"
       TZ: "Europe/Copenhagen"
-  memcached:
-    image: memcached:1.4-alpine
-    labels:
-      io.rancher.scheduler.affinity:host_label: wise=yes
-    environment:
-      TZ: "Europe/Copenhagen"
-    command:
-    - "memcached"
-    - "-m"
-    - "2048"
   plone:
     image: eeacms/plone-wise
     labels:
-      io.rancher.scheduler.affinity:host_label: wise=yes
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
     - zeoserver
     - memcached
@@ -42,10 +32,11 @@ services:
       TZ: "Europe/Copenhagen"
     volumes:
     - wise-downloads:/data/downloads
+    - wise-plone-data:/data
   async:
     image: eeacms/plone-wise
     labels:
-      io.rancher.scheduler.affinity:host_label: wise=yes
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
     - zeoserver
     - memcached
@@ -54,10 +45,20 @@ services:
      TZ: "Europe/Copenhagen"
     volumes:
     - wise-downloads:/data/downloads
+    - wise-async-data:/data
+  memcached:
+    image: memcached:1.4.35
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    environment:
+      TZ: "Europe/Copenhagen"
+    command:
+    - "-m"
+    - "2048"
   zeoserver:
     image: plone:4.3.10
     labels:
-      io.rancher.scheduler.affinity:host_label: wise=yes
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     environment:
       TZ: "Europe/Copenhagen"
     command:
@@ -65,5 +66,11 @@ services:
     volumes:
     - wise-data:/data
 volumes:
+  wise-plone-data:
+    per_container: true
+  wise-async-data:
+    per_container: true
   wise-data:
+    volume_driver: rancher-nfs
   wise-downloads:
+    volume_driver: rancher-nfs
