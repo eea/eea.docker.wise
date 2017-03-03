@@ -14,9 +14,9 @@
 
 In order to be able to edit source-code on your machine using your favorite editor, without having to do it inside a Docker container, you'll have to create a new user on your laptop with `uid=500` and use this user for development:
 
-    $ useradd -u 500 zope-www
-    $ usermod -a -G docker zope-www
-    $ sudo su - zope-www
+        $ sudo useradd -u 500 zope-www
+        $ sudo usermod -a -G docker zope-www
+        $ sudo su - zope-www
 
 1. Get the source code:
 
@@ -58,8 +58,8 @@ In order to be able to edit source-code on your machine using your favorite edit
 
 On your laptop:
 
-    $ git clone https://github.com/eea/eea.docker.wise.git
-    $ cd eea.docker.wise
+        $ git clone https://github.com/eea/eea.docker.wise.git
+        $ cd eea.docker.wise
 
 #### Access rights
 
@@ -81,16 +81,16 @@ on how to obtain your Rancher API Keys. Thus:
 
 #### Deploy in production:
 
-    $ rancher up -d
+        $ rancher up -d
 
 #### Upgrade:
 
-    $ rancher up -d --upgrade --batch-size 1
+        $ rancher up -d --upgrade --batch-size 1
 
 ...and confirm that the upgrade went well:
 
-    $ rancher up -d --confirm-upgrade
+        $ rancher up -d --confirm-upgrade
 
 ...or roll-back:
 
-    $ rancher up -d --roll-back
+        $ rancher up -d --roll-back
