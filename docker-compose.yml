@@ -4,13 +4,24 @@ services:
     image: eeacms/apache:2.4-1.0
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    depends_on:
+    - varnish
     environment:
-      SERVER_ADMIN: "helpdesk@wise.europa.eu"
-      SERVER_NAME: "wise.europa.eu"
-      RewriteRule: "^/(.*) http://haproxy:5000/VirtualHostBase/http/wise.europa.eu:80/VirtualHostRoot/$$1 [P,L]"
+      SERVER_ADMIN: "helpdesk@wise-test.eionet.europa.eu"
+      SERVER_NAME: "wise-test.eionet.europa.eu"
+      RewriteRule: "^/(.*) http://varnish/VirtualHostBase/http/wise-test.eionet.europa.eu:80/wise/VirtualHostRoot/$$1 [P,L]"
       TZ: "Europe/Copenhagen"
+  varnish:
+    image: eeacms/varnish-emrt-necd:1.5
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
     - haproxy
+    environment:
+      VARNISH_BACKEND_HOST: "haproxy"
+      VARNISH_BACKEND_PORT: "5000"
+      VARNISH_MEMORY: "2G"
+      TZ: "Europe/Copenhagen"
   haproxy:
     image: eeacms/haproxy:1.7-1.0
     labels:
