@@ -22,26 +22,31 @@ In order to be able to edit source-code on your machine using your favorite edit
 
         $ git clone https://github.com/eea/eea.docker.wise.git
         $ cd eea.docker.wise/wise-devel
-        $ docker-compose -f source-code.yml up
 
-2. Start development stack:
+2. Update development stack:
+
+        $ git pull
+        $ docker-compose -f source-code.yml up
+        $ docker-compose pull
+
+3. Start development stack:
 
         $ docker-compose up -d
 
-3. Start Plone in foreground:
+4. Start Plone in foreground:
 
         $ docker-compose exec plone bin/instance fg
 
-4. Within your favorite browser head to http://localhost:8080, add a Plone site and install the following add-ons:
+5. Within your favorite browser head to http://localhost:8080, add a Plone site and install the following add-ons:
     * `EEA Plone buildout profile`
     * `wise.theme`
     * `wise.content`
 
-5. Now you are ready to develop Plone Add-ons within `src` folder:
+6. Now you are ready to develop Plone Add-ons within `src` folder:
 
         $ ls -l src/
 
-6. You can do normal Plone development, including setting breakpoints with `ipdb`
+7. You can do normal Plone development, including setting breakpoints with `ipdb`
 
 
 ### Deployment
