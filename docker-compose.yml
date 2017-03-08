@@ -78,12 +78,25 @@ services:
     - zeoserver
     volumes:
     - wise-data:/data
+  rsync-server:
+    image: eeacms/rsync
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    command:
+    - server
+    ports:
+    - "22"
+    volumes:
+    - wise-data:/data
+    environment:
+      SSH_AUTH_KEY_1: "DISABLED: Add your SSH id_rsa.pub here to sync ZEO filestorage/blobstorage"
+
 volumes:
   wise-plone-data:
     per_container: true
   wise-async-data:
     per_container: true
   wise-data:
-    volume_driver: rancher-nfs
+    driver: rancher-nfs
   wise-downloads:
-    volume_driver: rancher-nfs
+    driver: rancher-nfs
