@@ -34,7 +34,7 @@ services:
       DNS_ENABLED: "True"
       TZ: "Europe/Copenhagen"
   plone:
-    image: eeacms/plone-wise
+    image: eeacms/plone-wise:0.1
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
@@ -47,7 +47,7 @@ services:
     - wise-downloads:/data/downloads
     - wise-plone-data:/data
   async:
-    image: eeacms/plone-wise
+    image: eeacms/plone-wise:0.1
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
@@ -78,12 +78,25 @@ services:
     - zeoserver
     volumes:
     - wise-data:/data
+  rsync-server:
+    image: eeacms/rsync
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    command:
+    - server
+    ports:
+    - "22"
+    volumes:
+    - wise-data:/data
+    environment:
+      SSH_AUTH_KEY_1: "DISABLED: Add your SSH id_rsa.pub here to sync ZEO filestorage/blobstorage"
+
 volumes:
   wise-plone-data:
     per_container: true
   wise-async-data:
     per_container: true
   wise-data:
-    volume_driver: rancher-nfs
+    driver: rancher-nfs
   wise-downloads:
-    volume_driver: rancher-nfs
+    driver: rancher-nfs

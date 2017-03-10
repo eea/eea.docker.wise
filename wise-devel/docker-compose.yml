@@ -14,11 +14,10 @@ services:
     command:
     - cat
   memcached:
-    image: memcached:alpine
+    image: memcached
     command:
-    - "memcached"
     - "-m"
-    - "2G"
+    - "2048"
   cloud9:
     image: eeacms/cloud9
     ports:
