@@ -40,9 +40,9 @@ In order to be able to edit source-code on your machine using your favorite edit
 5. Within your favorite browser head to http://localhost:8080, add a Plone site and install the following add-ons:
     * `EEA Plone buildout profile`
     * `wise.theme`
-    * `wise.content`
-   Go to Home, select the Contents tab and delete all the contents.
-   Then go to portal_setup and import from wise.content (extra).
+    * `wise.content`  
+   Go to Home, select the Contents tab and delete all the contents.  
+   Then go to portal_setup and import from wise.content (extra).  
     
 6. Now you are ready to develop Plone Add-ons within `src` folder:
 
