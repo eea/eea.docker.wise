@@ -9,7 +9,7 @@ services:
     environment:
       SERVER_ADMIN: "helpdesk@wise-test.eionet.europa.eu"
       SERVER_NAME: "wise-test.eionet.europa.eu"
-      RewriteRule: "^/(.*) http://varnish/VirtualHostBase/http/wise-test.eionet.europa.eu:80/wise/VirtualHostRoot/$$1 [P,L]"
+      RewriteRule: "^/(.*) http://varnish/VirtualHostBase/http/wise-test.eionet.europa.eu:80/Plone/VirtualHostRoot/$$1 [P,L]"
       TZ: "Europe/Copenhagen"
   varnish:
     image: eeacms/varnish-emrt-necd:1.5
@@ -34,7 +34,7 @@ services:
       DNS_ENABLED: "True"
       TZ: "Europe/Copenhagen"
   plone:
-    image: eeacms/plone-wise:0.2
+    image: eeacms/plone-wise:latest
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
@@ -47,7 +47,7 @@ services:
     - wise-downloads:/data/downloads
     - wise-plone-data:/data
   async:
-    image: eeacms/plone-wise:0.2
+    image: eeacms/plone-wise:latest
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
@@ -71,7 +71,7 @@ services:
   zeoserver:
     image: plone:4.3.10
     labels:
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: hostname=staging1-ams-02
     environment:
       TZ: "Europe/Copenhagen"
     command:
@@ -81,7 +81,7 @@ services:
   rsync-server:
     image: eeacms/rsync
     labels:
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: hostname=staging1-ams-02
     command:
     - server
     ports:
@@ -89,7 +89,7 @@ services:
     volumes:
     - wise-data:/data
     environment:
-      SSH_AUTH_KEY_1: "DISABLED: Add your SSH id_rsa.pub here to sync ZEO filestorage/blobstorage"
+      SSH_AUTH_KEY_1: "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAtpQ268Pd9FQhEl8NxsCVVRc2kM42883/AEFqeZ+gh2mEMXRdykK1VgXgcuPhHTnhFjWHXk7cgVWkmFQ2jqdVSbAl2aLFYRDNCqkqQM/Itg93HTWTrL89cv3hzWTpzWxNqVE2eHyDysPul41F8lw/+q9hF4xLijFCe2vbVhaHTB8GydQwjtPyv0u28adLnN/02GGhwF2Rh4a6p+v4ANLniw8XNW7fU5HtyZeZkzpdr2k+UJi+A8r8XnKvP4v4ltb/dRIuRI3Rupz1XW5gkjGo92w9+thzxF8DKf3BtFuHIOIA2wCXzGZ5jxzeKZNppitBGgII7VcaKYWJxqCuDuQ4jQ== tibi@localhost"
 
 volumes:
   wise-plone-data:
